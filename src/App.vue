@@ -1,9 +1,11 @@
 <template>
   <v-app>
-    <AccountItem />
+    <v-main>
+      <AccountForm />
+    </v-main>
   </v-app>
 </template>
 
-<script lang="ts" setup>
-import AccountItem from "./components/AccountItem.vue";
+<script setup lang="ts">
+import AccountForm from "./components/AccountForm.vue";
 </script>
