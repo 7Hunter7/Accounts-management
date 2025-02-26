@@ -3,27 +3,27 @@
     <v-card-text>
       <v-text-field
         label="Метка"
-        v-model="label"
+        v-model="localAccount.label"
         :rules="labelRules"
       ></v-text-field>
 
       <v-select
         label="Тип записи"
         :items="recordTypes"
-        v-model="recordType"
+        v-model="localAccount.recordType"
         @change="onRecordTypeChange"
       ></v-select>
 
       <v-text-field
         label="Логин"
-        v-model="login"
+        v-model="localAccount.login"
         :rules="loginRules"
       ></v-text-field>
 
       <v-text-field
         v-if="recordType === 'Локальная'"
         label="Пароль"
-        v-model="password"
+        v-model="localAccount.password"
         :rules="passwordRules"
       ></v-text-field>
     </v-card-text>
@@ -36,12 +36,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, watch } from "vue";
 
-const label = ref("");
-const recordType = ref("Локальная");
-const login = ref("");
-const password = ref("");
+interface Account {
+  id: number;
+  label: string;
+  recordType: string;
+  login: string;
+  password?: string;
+}
+
+const props = defineProps<{
+  account: Account;
+}>();
+
+const emit = defineEmits<{
+  (e: "update", account: Account): void;
+  (e: "delete"): void;
+}>();
+
+const localAccount = ref<Account>({ ...props.account });
 
 const recordTypes = ref(["LDAP", "Локальная"]);
 
@@ -61,13 +75,21 @@ const passwordRules = ref([
 ]);
 
 const onRecordTypeChange = () => {
-  if (recordType.value === "LDAP") {
-    password.value = ""; // Сброс пароля при выборе LDAP
+  if (localAccount.value.recordType === "LDAP") {
+    localAccount.value.password = ""; // Сброс пароля при выборе LDAP
   }
+  emit("update", localAccount.value);
 };
 
 const onDelete = () => {
-  // Логика удаления
-  console.log("Delete clicked");
+  emit("delete");
 };
+
+watch(
+  localAccount,
+  () => {
+    emit("update", localAccount.value);
+  },
+  { deep: true }
+);
 </script>
