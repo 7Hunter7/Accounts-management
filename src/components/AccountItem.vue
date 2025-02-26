@@ -1,37 +1,42 @@
 <template>
   <v-card>
-    <v-card-text>
-      <v-text-field
-        label="Метка"
-        v-model="localAccount.label"
-        :rules="labelRules"
-      ></v-text-field>
+    <v-row>
+      <v-card-text>
+        <v-row>
+          <v-text-field
+            label="Метка"
+            v-model="localAccount.label"
+            :rules="labelRules"
+          ></v-text-field>
 
-      <v-select
-        label="Тип записи"
-        :items="recordTypes"
-        v-model="localAccount.recordType"
-        @change="onRecordTypeChange"
-      ></v-select>
+          <v-select
+            label="Тип записи"
+            :items="recordTypes"
+            v-model="localAccount.recordType"
+            @change="onRecordTypeChange"
+          ></v-select>
 
-      <v-text-field
-        label="Логин"
-        v-model="localAccount.login"
-        :rules="loginRules"
-      ></v-text-field>
+          <v-text-field
+            label="Логин"
+            v-model="localAccount.login"
+            :rules="loginRules"
+          ></v-text-field>
 
-      <v-text-field
-        v-if="recordType === 'Локальная'"
-        label="Пароль"
-        v-model="localAccount.password"
-        :rules="passwordRules"
-      ></v-text-field>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn color="error" @click="onDelete">
-        <v-icon icon="mdi-delete"></v-icon>
-      </v-btn>
-    </v-card-actions>
+          <v-text-field
+            v-if="recordType === 'Локальная'"
+            label="Пароль"
+            v-model="localAccount.password"
+            :rules="passwordRules"
+          ></v-text-field>
+        </v-row>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn color="error" @click="onDelete">
+          <v-icon icon="mdi-delete"></v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-row>
   </v-card>
 </template>
 
