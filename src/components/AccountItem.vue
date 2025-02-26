@@ -2,36 +2,46 @@
   <v-card>
     <v-row>
       <v-card-text>
-        <v-row>
-          <v-text-field
-            label="Метка"
-            v-model="localAccount.label"
-            :rules="labelRules"
-          ></v-text-field>
+        <v-container>
+          <v-row>
+            <v-col cols="12" md="3">
+              <v-text-field
+                label="Метка"
+                v-model="localAccount.label"
+                :rules="labelRules"
+              ></v-text-field>
+            </v-col>
 
-          <v-select
-            label="Тип записи"
-            :items="recordTypes"
-            v-model="localAccount.recordType"
-            @change="onRecordTypeChange"
-          ></v-select>
+            <v-col cols="12" md="3">
+              <v-select
+                label="Тип записи"
+                :items="recordTypes"
+                v-model="localAccount.recordType"
+                @change="onRecordTypeChange"
+              ></v-select>
+            </v-col>
 
-          <v-text-field
-            label="Логин"
-            v-model="localAccount.login"
-            :rules="loginRules"
-          ></v-text-field>
+            <v-col cols="12" md="3">
+              <v-text-field
+                label="Логин"
+                v-model="localAccount.login"
+                :rules="loginRules"
+              ></v-text-field>
+            </v-col>
 
-          <v-text-field
-            v-if="recordType === 'Локальная'"
-            label="Пароль"
-            v-model="localAccount.password"
-            :rules="passwordRules"
-          ></v-text-field>
-        </v-row>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-if="recordType === 'Локальная'"
+                label="Пароль"
+                v-model="localAccount.password"
+                :rules="passwordRules"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions justify="end">
         <v-btn color="error" @click="onDelete">
           <v-icon icon="mdi-delete"></v-icon>
         </v-btn>
