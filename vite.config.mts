@@ -56,7 +56,13 @@ export default defineConfig({
     extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
   },
   server: {
-    port: 3000,
+    proxy: {
+      "/api": {
+        target: "http://localhost:5173/", //  URL нашего API
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
   css: {
     preprocessorOptions: {
