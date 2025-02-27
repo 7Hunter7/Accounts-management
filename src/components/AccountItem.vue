@@ -146,8 +146,6 @@ const onRecordTypeChange = () => {
   if (localAccount.value.recordType === "LDAP") {
     localAccount.value.password = null; // Устанавливаем пароль на null
   }
-  // Принудительное обновление localAccount
-  localAccount.value = { ...localAccount.value };
   onUpdate();
 };
 

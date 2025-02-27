@@ -2,7 +2,7 @@
   <v-container>
     <h1>Управление учетными записями</h1>
     <v-container>
-      <span>Добавить учетную запись </span>
+      <span>Добавить учетную запись</span>
       <v-btn color="primary" @click="addAccount">
         <v-icon icon="mdi-plus"></v-icon>
       </v-btn>
@@ -54,10 +54,10 @@ onMounted(() => {
 });
 
 const addAccount = () => {
-  const newId = crypto.randomUUID(); //  Генерация уникальных идентификаторов
+  const newId = crypto.randomUUID(); //  Генерация уникального идентификаторов
   const newAccount = {
     id: newId,
-    label: [{ text: "" }],
+    label: "",
     recordType: "Локальная",
     login: "",
     password: "",
