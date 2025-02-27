@@ -58,7 +58,6 @@
 </template>
 
 <script setup lang="ts">
-// AccountItem.vue
 import { ref, watch, onMounted, computed } from "vue";
 import type { Account } from "@/types/account";
 
@@ -69,7 +68,13 @@ interface AccountProps {
 const props = defineProps<AccountProps>();
 
 const localAccount = ref<Account>({ ...props.account });
-const localLabel = ref<string>(props.account.label || "");
+
+// Преобразует массив объектов { text: string } в массив строк (извлекая значения text):
+const localLabel = ref<string>(
+  Array.isArray(props.account.label)
+    ? props.account.label.map((item) => item.text).join(";")
+    : ""
+);
 const recordTypes = ref(["LDAP", "Локальная"]);
 
 // ref для отслеживания ошибок валидации
