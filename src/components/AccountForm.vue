@@ -50,6 +50,7 @@ const store = useAppStore();
 const accounts = computed(() => store.getAccounts);
 
 onMounted(() => {
+  store.loadAccountsFromLocalStorage(); // Загружаем данные из localStorage
   console.log("Accounts from store:", accounts.value);
 });
 
