@@ -66,6 +66,7 @@ const addAccount = () => {
 };
 
 const updateAccount = (account: Account) => {
+  console.log("AccountForm received update:", account);
   store.updateAccount(account);
 };
 

@@ -174,6 +174,7 @@ const onUpdate = () => {
       .split(";") // Разделим строку "Метки" на подстроку по символу “;”.
       .map((label) => ({ text: label.trim() })),
   };
+  console.log("AccountItem emitting update:", localAccount.value);
   emit("update", updatedAccount);
 };
 
