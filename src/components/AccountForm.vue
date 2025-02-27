@@ -28,23 +28,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import AccountItem from "./AccountItem.vue";
+import AccountItem from "@/components/AccountItem.vue";
 import { useAppStore } from "@/stores/app";
+import { Account } from "@/types/account";
 
 const store = useAppStore();
-
-interface Account {
-  id: string;
-  label: string;
-  recordType: string;
-  login: string;
-  password?: string;
-}
 
 const accounts = ref<Account[]>([]);
 
 onMounted(() => {
-  accounts.value = store.accounts;
+  accounts.value = store.getAccounts;
 });
 
 const addAccount = () => {
