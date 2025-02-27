@@ -5,12 +5,18 @@
     <v-btn color="primary" @click="addAccount">
       <v-icon icon="mdi-plus"></v-icon>
     </v-btn>
+
     <v-row v-if="accounts.length > 0">
-      <v-col cols="12" md="6" v-for="account in accounts" :key="account.id">
+      <v-col
+        cols="12"
+        md="6"
+        v-for="(account, index) in accounts"
+        :key="account.id"
+      >
         <AccountItem
           :account="account"
-          @update="updateAccount(account.id, $event)"
-          @delete="deleteAccount(account.id)"
+          @update="updateAccount(index, $event)"
+          @delete="deleteAccount(index)"
         />
       </v-col>
     </v-row>
@@ -21,52 +27,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import AccountItem from "./AccountItem.vue";
+import { useAppStore } from "@/stores/app";
+
+const store = useAppStore();
 
 interface Account {
-  id: number;
+  id: string;
   label: string;
   recordType: string;
   login: string;
   password?: string;
 }
 
-const accounts = ref<Account[]>([
-  {
-    id: 1,
-    label: "XXX",
-    recordType: "Локальная",
-    login: "Значение1",
-    password: "Pyfxtybt",
-  },
-  {
-    id: 2,
-    label: "YYY",
-    recordType: "Локальная",
-    login: "Значение2",
-    password: "Pyfxtybtyna",
-  },
-  {
-    id: 3,
-    label: "XXX; YYY",
-    recordType: "Локальная",
-    login: "Значение3",
-    password: "Pyfxtybtyna823",
-  },
-  {
-    id: 4,
-    label: "MMM",
-    recordType: "LDAP",
-    login: "",
-    password: "",
-  },
-  { id: 5, label: "VVV", recordType: "LDAP", login: "", password: "" },
-]);
+const accounts = ref<Account[]>([]);
+
+onMounted(() => {
+  accounts.value = store.accounts;
+});
 
 const addAccount = () => {
-  const newId = crypto.randomUUID(); // Создание уникального идентификатора
+  const newId = crypto.randomUUID();
   accounts.value.push({
+    id: newId,
+    label: "",
+    recordType: "Локальная",
+    login: "",
+    password: "",
+  });
+  store.addAccount({
     id: newId,
     label: "",
     recordType: "Локальная",
@@ -75,11 +65,14 @@ const addAccount = () => {
   });
 };
 
-const updateAccount = (id: number, updatedAccount: Account) => {
-  accounts.value[id] = updatedAccount;
+const updateAccount = (index: number, updatedAccount: Account) => {
+  accounts.value[index] = updatedAccount;
+  store.updateAccount(updatedAccount);
 };
 
-const deleteAccount = (id: number) => {
-  accounts.value.splice(id, 1);
+const deleteAccount = (index: number) => {
+  const idToDelete = accounts.value[index].id;
+  accounts.value.splice(index, 1);
+  store.deleteAccount(idToDelete);
 };
 </script>
