@@ -9,7 +9,7 @@
     </v-container>
 
     <!-- Общий заголовок -->
-    <v-container>
+    <v-container cols="12">
       <v-row class="account-header">
         <v-col cols="3">Метки</v-col>
         <v-col cols="3">Тип записи</v-col>

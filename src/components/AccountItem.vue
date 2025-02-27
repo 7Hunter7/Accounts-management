@@ -2,7 +2,7 @@
   <v-card class="account-item">
     <v-card-text>
       <v-row>
-        <v-col col="4">
+        <v-col col="3">
           <v-text-field
             label="Метка"
             v-model="localLabel"
@@ -32,7 +32,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col col="3">
+        <v-col col="2">
           <v-text-field
             v-if="localAccount.recordType === 'Локальная'"
             label="Пароль"
@@ -73,7 +73,7 @@ const emit = defineEmits<{
 
 const localAccount = ref<Account>({ ...props.account });
 
-// Преобразует массив объектов { text: string } в массив строк (извлекая значения text):
+// Преобразуеm массив объектов { text: string } в массив строк (извлекая значения text):
 const localLabel = ref<string>(
   Array.isArray(props.account.label)
     ? props.account.label.map((item) => item.text).join(";")
@@ -164,10 +164,10 @@ const onPasswordBlur = () => {
   onUpdate();
 };
 
+// Преобразование метки в массив объектов:
 const onUpdate = () => {
-  // Преобразование метки в массив объектов
   localAccount.value.label = localLabel.value
-    .split(";") // Разделение строки меток на подстроки по символу “;”.
+    .split(";") // Разделим строку "Метки" на подстроку по символу “;”.
     .map((label) => ({ text: label.trim() })); // Преобразуем в массив объектов
   emit("update", localAccount.value);
 };
