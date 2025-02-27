@@ -1,16 +1,46 @@
 import { defineStore } from "pinia";
-
-interface Account {
-  id: string;
-  label: string;
-  recordType: string;
-  login: string;
-  password?: string;
-}
+import type { Account } from "@/types/account";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
-    accounts: [] as Account[],
+    accounts: [
+      // Массив начальных аккаунтов
+      {
+        id: crypto.randomUUID(), //  Генерации уникальных идентификаторов
+        label: "XXX",
+        recordType: "Локальная",
+        login: "Значение_1",
+        password: "pyfxtybt",
+      },
+      {
+        id: crypto.randomUUID(),
+        label: "YYY",
+        recordType: "Локальная",
+        login: "Значение_2",
+        password: "pyfXtyBtyna",
+      },
+      {
+        id: crypto.randomUUID(),
+        label: "AAA",
+        recordType: "Локальная",
+        login: "Значение_3",
+        password: "Pyfxtybtyna823",
+      },
+      {
+        id: crypto.randomUUID(),
+        label: "MMM",
+        recordType: "LDAP",
+        login: "",
+        password: "",
+      },
+      {
+        id: crypto.randomUUID(),
+        label: "VVV",
+        recordType: "LDAP",
+        login: "",
+        password: "",
+      },
+    ] as Account[],
   }),
   getters: {
     getAccounts: (state) => state.accounts,
