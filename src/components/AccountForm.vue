@@ -57,7 +57,7 @@ const addAccount = () => {
   const newId = crypto.randomUUID(); //  Генерация уникального идентификаторов
   const newAccount = {
     id: newId,
-    label: "",
+    label: { text: "" },
     recordType: "Локальная",
     login: "",
     password: "",
