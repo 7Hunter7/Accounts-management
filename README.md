@@ -55,18 +55,23 @@ account_management/
 ├── src/ # Исходный код
 │ ├── components/ # Компоненты Vue
 │ │ ├── AccountForm.vue
-│ │ ├── AccountItem.vue
-│ ├── stores/ # Pinia store
-│ │ └── app.ts
-│ ├── types/ # Типы TypeScript
-│ │ └── account.ts
-│ ├── App.vue # Главный компонент приложения
-│ ├── main.ts # Точка входа приложения
+│ │ └── AccountItem.vue
 │ ├── plugins/ # Plugins
+│ │ ├── index.ts
+│ │ └── vuetify.ts
+│ ├── stores/ # Pinia store
+│ │ ├── app.ts
 │ │ └── index.ts
-├── vite.config.ts # Конфигурация Vite
+│ ├── types/ # Типы TypeScript
+│ │ ├── account.ts
+│ │ └── pinia-plugin-persist.d.ts
+│ ├── App.vue # Главный компонент приложения
+│ └── main.ts # Точка входа приложения
+├── index.html # Главный файл
+├── package.json # Файл зависимостей
 ├── tsconfig.json # Конфигурация TypeScript
-└── package.json # Файл зависимостей ├── README.md # Этот файл
+├── README.md # Этот файл
+└── vite.config.ts # Конфигурация Vite
 ```
 
 ## Использованные библиотеки и версии:
