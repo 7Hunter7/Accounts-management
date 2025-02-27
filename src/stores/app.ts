@@ -7,35 +7,35 @@ export const useAppStore = defineStore("app", {
       // Массив начальных аккаунтов
       {
         id: crypto.randomUUID(), //  Генерация уникальных идентификаторов
-        label: "XXX",
+        label: [{ text: "XXX" }],
         recordType: "Локальная",
         login: "Значение_1",
         password: "pyfxtybt",
       },
       {
         id: crypto.randomUUID(),
-        label: "YYY",
+        label: [{ text: "XXX" }, { text: "YYY" }],
         recordType: "Локальная",
         login: "Значение_2",
         password: "pyfXtyBtyna",
       },
       {
         id: crypto.randomUUID(),
-        label: "AAA",
+        label: [{ text: "AAA" }, { text: "VVV" }, { text: "YYY" }],
         recordType: "Локальная",
         login: "Значение_3",
         password: "Pyfxtybtyna823",
       },
       {
         id: crypto.randomUUID(),
-        label: "MMM",
+        label: [{ text: "MMM" }],
         recordType: "LDAP",
         login: "",
         password: "",
       },
       {
         id: crypto.randomUUID(),
-        label: "VVV",
+        label: [{ text: "VVV" }],
         recordType: "LDAP",
         login: "",
         password: "",
