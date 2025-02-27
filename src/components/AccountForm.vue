@@ -5,14 +5,17 @@
     <v-btn color="primary" @click="addAccount">
       <v-icon icon="mdi-plus"></v-icon>
     </v-btn>
-    <v-row>
-      <v-col cols="12" md="6" v-for="account in accounts" :key="id">
+    <v-row v-if="accounts.length > 0">
+      <v-col cols="12" md="6" v-for="account in accounts" :key="account.id">
         <AccountItem
           :account="account"
-          @update="updateAccount(index, $event)"
-          @delete="deleteAccount(index)"
+          @update="updateAccount(account.id, $event)"
+          @delete="deleteAccount(account.id)"
         />
       </v-col>
+    </v-row>
+    <v-row v-else>
+      <v-col> Нет учетных записей. </v-col>
     </v-row>
   </v-container>
 </template>
@@ -62,10 +65,9 @@ const accounts = ref<Account[]>([
 ]);
 
 const addAccount = () => {
+  const newId = crypto.randomUUID(); // Создание уникального идентификатора
   accounts.value.push({
-    id: () => {
-      new Date();
-    },
+    id: newId,
     label: "",
     recordType: "Локальная",
     login: "",
