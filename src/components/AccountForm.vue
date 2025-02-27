@@ -20,16 +20,11 @@
     </v-container>
 
     <v-row v-if="accounts.length > 0">
-      <v-col
-        cols="12"
-        md="12"
-        v-for="(account, index) in accounts"
-        :key="account.id"
-      >
+      <v-col cols="12" v-for="account in accounts" :key="account.id">
         <AccountItem
           :account="account"
-          @update="updateAccount(index, $event)"
-          @delete="deleteAccount(index)"
+          @update="updateAccount(account)"
+          @delete="deleteAccount(account.id)"
         />
       </v-col>
     </v-row>
@@ -45,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import AccountItem from "@/components/AccountItem.vue";
 import { useAppStore } from "@/stores/app";
 import type { Account } from "@/types/account";
@@ -70,13 +65,12 @@ const addAccount = () => {
   store.addAccount(newAccount);
 };
 
-const updateAccount = (index: number, updatedAccount: Account) => {
-  store.updateAccount(updatedAccount);
+const updateAccount = (account: Account) => {
+  store.updateAccount(account);
 };
 
-const deleteAccount = (index: number) => {
-  const idToDelete = accounts.value[index].id;
-  store.deleteAccount(idToDelete);
+const deleteAccount = (id: string) => {
+  store.deleteAccount(id);
 };
 </script>
 
