@@ -3,5 +3,5 @@ export interface Account {
   label: string;
   recordType: string;
   login: string;
-  password?: string | null;
+  password?: string | null | undefined;
 }

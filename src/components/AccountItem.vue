@@ -59,18 +59,13 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from "vue";
+import type { Account } from "@/types/account";
 
-interface Account {
-  id: string;
-  label: string;
-  recordType: string;
-  login: string;
-  password?: string | null;
+interface AccountProps {
+  account: Account;
 }
 
-const props = defineProps<{
-  account: Account;
-}>();
+const props = defineProps<AccountProps>();
 
 const emit = defineEmits<{
   (e: "update", account: Account): void;

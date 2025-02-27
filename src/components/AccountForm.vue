@@ -30,7 +30,7 @@
 import { ref, onMounted } from "vue";
 import AccountItem from "@/components/AccountItem.vue";
 import { useAppStore } from "@/stores/app";
-import { Account } from "@/types/account";
+import type { Account } from "@/types/account";
 
 const store = useAppStore();
 
