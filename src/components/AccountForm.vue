@@ -52,10 +52,9 @@ import type { Account } from "@/types/account";
 
 const store = useAppStore();
 
-const accounts = ref<Account[]>([]);
+const accounts = computed(() => store.getAccounts);
 
 onMounted(() => {
-  accounts.value = store.getAccounts;
   console.log("Accounts from store:", accounts.value);
 });
 
@@ -72,13 +71,11 @@ const addAccount = () => {
 };
 
 const updateAccount = (index: number, updatedAccount: Account) => {
-  accounts.value[index] = updatedAccount;
   store.updateAccount(updatedAccount);
 };
 
 const deleteAccount = (index: number) => {
   const idToDelete = accounts.value[index].id;
-  accounts.value.splice(index, 1);
   store.deleteAccount(idToDelete);
 };
 </script>
