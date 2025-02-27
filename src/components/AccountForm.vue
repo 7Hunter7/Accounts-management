@@ -68,7 +68,6 @@ const addAccount = () => {
     login: "",
     password: "",
   };
-  accounts.value.push(newAccount);
   store.addAccount(newAccount);
 };
 
