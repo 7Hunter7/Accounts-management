@@ -1,7 +1,7 @@
 import { createPinia } from "pinia";
-import { persistStore } from "pinia-plugin-persist";
+import piniaPluginPersistedstate from "pinia-plugin-persist";
 
 const pinia = createPinia();
-pinia.use(persistStore);
+pinia.use(piniaPluginPersistedstate);
 
 export default pinia;
