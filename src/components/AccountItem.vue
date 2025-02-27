@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
+import { ref, watch } from "vue";
 import type { Account } from "@/types/account";
 
 interface AccountProps {
@@ -66,6 +66,11 @@ interface AccountProps {
 }
 
 const props = defineProps<AccountProps>();
+
+const emit = defineEmits<{
+  (e: "update", account: Account): void;
+  (e: "delete"): void;
+}>();
 
 const localAccount = ref<Account>({ ...props.account });
 
@@ -180,5 +185,7 @@ watch(
   { immediate: true, deep: true }
 );
 
-const emit = defineEmits(["update", "delete"]);
+const onDelete = () => {
+  emit("delete");
+};
 </script>
