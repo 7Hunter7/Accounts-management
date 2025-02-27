@@ -10,8 +10,10 @@ export interface PersistOptions {
 }
 declare type Store = PiniaPluginContext["store"];
 declare module "pinia" {
+  // Расширяем базовый интерфейс для опций defineStore, добавляя туда опцию persist
   interface DefineStoreOptionsBase<S, Store> {
     persist?: PersistOptions;
+    // Позволяет TypeScript понимать, что мы можем использовать persist внутри defineStore.
   }
 }
 export declare const updateStorage: (
@@ -21,6 +23,7 @@ export declare const updateStorage: (
 declare const _default: ({ options, store }: PiniaPluginContext) => void;
 export default _default;
 
+// Предоставляем определения для модуля pinia-plugin-persist
 declare module "pinia-plugin-persist" {
   import { PiniaPlugin } from "pinia";
 
