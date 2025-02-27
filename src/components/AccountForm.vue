@@ -14,7 +14,8 @@
         <v-col cols="3">Метки</v-col>
         <v-col cols="3">Тип записи</v-col>
         <v-col cols="3">Логин</v-col>
-        <v-col cols="3">Пароль</v-col>
+        <v-col cols="2">Пароль</v-col>
+        <v-col cols="1"></v-col>
       </v-row>
     </v-container>
 

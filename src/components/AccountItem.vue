@@ -1,60 +1,59 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-card>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" md="3">
-              <v-text-field
-                label="Метка"
-                v-model="localLabel"
-                :rules="labelRules"
-                @blur="onLabelBlur"
-                :error="labelError"
-                hint="Метки вводятся через знак ';'"
-              ></v-text-field>
-            </v-col>
+  <v-card class="account-item">
+    <v-card-text>
+      <v-row>
+        <v-col col="4">
+          <v-text-field
+            label="Метка"
+            v-model="localLabel"
+            :rules="labelRules"
+            @blur="onLabelBlur"
+            :error="labelError"
+            hint="Метки вводятся через знак ';'"
+          ></v-text-field>
+        </v-col>
 
-            <v-col cols="12" md="3">
-              <v-select
-                label="Тип записи"
-                :items="recordTypes"
-                v-model="localAccount.recordType"
-                @change="onRecordTypeChange"
-              ></v-select>
-            </v-col>
+        <v-col col="3">
+          <v-select
+            label="Тип записи"
+            :items="recordTypes"
+            v-model="localAccount.recordType"
+            @change="onRecordTypeChange"
+          ></v-select>
+        </v-col>
 
-            <v-col cols="12" md="3">
-              <v-text-field
-                label="Логин"
-                v-model="localAccount.login"
-                :rules="loginRules"
-                @blur="onLoginBlur"
-                :error="loginError"
-              ></v-text-field>
-            </v-col>
+        <v-col col="3">
+          <v-text-field
+            label="Логин"
+            v-model="localAccount.login"
+            :rules="loginRules"
+            @blur="onLoginBlur"
+            :error="loginError"
+          ></v-text-field>
+        </v-col>
 
-            <v-col cols="12" md="3">
-              <v-text-field
-                v-if="localAccount.recordType === 'Локальная'"
-                label="Пароль"
-                v-model="localAccount.password"
-                :rules="passwordRules"
-                @blur="onPasswordBlur"
-                :error="passwordError"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-card-text>
+        <v-col col="3">
+          <v-text-field
+            v-if="localAccount.recordType === 'Локальная'"
+            label="Пароль"
+            v-model="localAccount.password"
+            :rules="passwordRules"
+            @blur="onPasswordBlur"
+            :error="passwordError"
+            :type="showPassword ? 'text' : 'password'"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
+          ></v-text-field>
+        </v-col>
 
-        <v-card-actions justify="end">
+        <v-card-actions justify="end" row="1">
           <v-btn color="error" @click="onDelete">
             <v-icon icon="mdi-delete"></v-icon>
           </v-btn>
         </v-card-actions>
-      </v-card>
-    </v-row>
-  </v-container>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script setup lang="ts">
@@ -81,6 +80,7 @@ const localLabel = ref<string>(
     : ""
 );
 const recordTypes = ref(["LDAP", "Локальная"]);
+const showPassword = ref(false);
 
 // ref для отслеживания ошибок валидации
 const loginError = ref(false);
@@ -189,3 +189,11 @@ const onDelete = () => {
   emit("delete");
 };
 </script>
+
+<style scoped>
+.account-item {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+</style>
