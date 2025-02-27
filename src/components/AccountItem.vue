@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import type { Account } from "@/types/account";
 
 interface AccountProps {
@@ -146,6 +146,8 @@ const onRecordTypeChange = () => {
   if (localAccount.value.recordType === "LDAP") {
     localAccount.value.password = null; // Устанавливаем пароль на null
   }
+  // Принудительное обновление localAccount
+  localAccount.value = { ...localAccount.value };
   onUpdate();
 };
 
@@ -166,10 +168,13 @@ const onPasswordBlur = () => {
 
 // Преобразование метки в массив объектов:
 const onUpdate = () => {
-  localAccount.value.label = localLabel.value
-    .split(";") // Разделим строку "Метки" на подстроку по символу “;”.
-    .map((label) => ({ text: label.trim() })); // Преобразуем в массив объектов
-  emit("update", localAccount.value);
+  const updatedAccount = {
+    ...localAccount.value,
+    label: localLabel.value
+      .split(";") // Разделим строку "Метки" на подстроку по символу “;”.
+      .map((label) => ({ text: label.trim() })),
+  };
+  emit("update", updatedAccount);
 };
 
 watch(
