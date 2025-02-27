@@ -20,8 +20,13 @@
         />
       </v-col>
     </v-row>
+
     <v-row v-else>
-      <v-col> Нет учетных записей. </v-col>
+      <v-container>
+        <v-col>
+          <h2>Здесь пока нет учетных записей</h2>
+        </v-col>
+      </v-container>
     </v-row>
   </v-container>
 </template>
@@ -38,6 +43,7 @@ const accounts = ref<Account[]>([]);
 
 onMounted(() => {
   accounts.value = store.getAccounts;
+  console.log("Accounts from store:", accounts.value);
 });
 
 const addAccount = () => {
