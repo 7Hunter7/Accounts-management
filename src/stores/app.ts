@@ -52,7 +52,7 @@ export const useAppStore = defineStore("app", {
     updateAccount(account: Account) {
       const index = this.accounts.findIndex((a) => a.id === account.id);
       if (index !== -1) {
-        this.accounts[index] = account;
+        this.accounts[index] = account; // Обновляем элемент по index, найденному по id
       }
     },
     deleteAccount(id: string) {
