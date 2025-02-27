@@ -1,15 +1,27 @@
 <template>
   <v-container>
     <h1>Управление учетными записями</h1>
-    <span>Добавить учетную запись </span>
-    <v-btn color="primary" @click="addAccount">
-      <v-icon icon="mdi-plus"></v-icon>
-    </v-btn>
+    <v-container>
+      <span>Добавить учетную запись </span>
+      <v-btn color="primary" @click="addAccount">
+        <v-icon icon="mdi-plus"></v-icon>
+      </v-btn>
+    </v-container>
+
+    <!-- Общий заголовок -->
+    <v-container>
+      <v-row class="account-header">
+        <v-col cols="3">Метки</v-col>
+        <v-col cols="3">Тип записи</v-col>
+        <v-col cols="3">Логин</v-col>
+        <v-col cols="3">Пароль</v-col>
+      </v-row>
+    </v-container>
 
     <v-row v-if="accounts.length > 0">
       <v-col
         cols="12"
-        md="6"
+        md="12"
         v-for="(account, index) in accounts"
         :key="account.id"
       >
@@ -70,3 +82,10 @@ const deleteAccount = (index: number) => {
   store.deleteAccount(idToDelete);
 };
 </script>
+
+<style scoped>
+.account-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+</style>
