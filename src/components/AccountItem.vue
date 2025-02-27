@@ -1,14 +1,16 @@
 <template>
-  <v-card>
+  <v-container>
     <v-row>
-      <v-card-text>
-        <v-container>
+      <v-card>
+        <v-card-text>
           <v-row>
             <v-col cols="12" md="3">
               <v-text-field
                 label="Метка"
-                v-model="localAccount.label"
+                v-model="localLabel"
                 :rules="labelRules"
+                @blur="onLabelBlur"
+                hint="Метки вводятся через знак ';'"
               ></v-text-field>
             </v-col>
 
@@ -26,35 +28,37 @@
                 label="Логин"
                 v-model="localAccount.login"
                 :rules="loginRules"
+                @blur="onUpdate"
               ></v-text-field>
             </v-col>
 
             <v-col cols="12" md="3">
               <v-text-field
-                v-if="recordType === 'Локальная'"
+                v-if="localAccount.recordType === 'Локальная'"
                 label="Пароль"
                 v-model="localAccount.password"
                 :rules="passwordRules"
+                @blur="onUpdate"
               ></v-text-field>
             </v-col>
           </v-row>
-        </v-container>
-      </v-card-text>
+        </v-card-text>
 
-      <v-card-actions justify="end">
-        <v-btn color="error" @click="onDelete">
-          <v-icon icon="mdi-delete"></v-icon>
-        </v-btn>
-      </v-card-actions>
+        <v-card-actions justify="end">
+          <v-btn color="error" @click="onDelete">
+            <v-icon icon="mdi-delete"></v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-row>
-  </v-card>
+  </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 interface Account {
-  id: number;
+  id: string;
   label: string;
   recordType: string;
   login: string;
@@ -71,6 +75,7 @@ const emit = defineEmits<{
 }>();
 
 const localAccount = ref<Account>({ ...props.account });
+const localLabel = ref(props.account.label); // Отдельная ссылка для метки
 
 const recordTypes = ref(["LDAP", "Локальная"]);
 
@@ -91,20 +96,32 @@ const passwordRules = ref([
 
 const onRecordTypeChange = () => {
   if (localAccount.value.recordType === "LDAP") {
-    localAccount.value.password = ""; // Сброс пароля при выборе LDAP
+    localAccount.value.password = null; // Устанавливаем пароль на null
   }
-  emit("update", localAccount.value);
+  onUpdate();
 };
 
 const onDelete = () => {
   emit("delete");
 };
 
+const onLabelBlur = () => {
+  onUpdate();
+};
+
+const onUpdate = () => {
+  // Преобразование строки метки в массив объектов
+  localAccount.value.label = localLabel.value;
+
+  emit("update", localAccount.value);
+};
+
 watch(
-  localAccount,
-  () => {
-    emit("update", localAccount.value);
+  () => props.account,
+  (newAccount) => {
+    localAccount.value = { ...newAccount };
+    localLabel.value = newAccount.label;
   },
-  { deep: true }
+  { immediate: true, deep: true }
 );
 </script>
