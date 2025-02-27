@@ -41,21 +41,16 @@ onMounted(() => {
 });
 
 const addAccount = () => {
-  const newId = crypto.randomUUID();
-  accounts.value.push({
+  const newId = crypto.randomUUID(); //  Генерация уникальных идентификаторов
+  const newAccount = {
     id: newId,
     label: "",
     recordType: "Локальная",
     login: "",
     password: "",
-  });
-  store.addAccount({
-    id: newId,
-    label: "",
-    recordType: "Локальная",
-    login: "",
-    password: "",
-  });
+  };
+  accounts.value.push(newAccount);
+  store.addAccount(newAccount);
 };
 
 const updateAccount = (index: number, updatedAccount: Account) => {
