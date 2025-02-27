@@ -29,5 +29,13 @@ export const useAppStore = defineStore("app", {
       this.accounts = this.accounts.filter((account) => account.id !== id);
     },
   },
-  persist: true, // Включим персистентность
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        key: "account_management_accounts",
+        storage: localStorage,
+      },
+    ],
+  },
 });
