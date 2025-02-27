@@ -58,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+// AccountItem.vue
 import { ref, watch, onMounted, computed } from "vue";
 import type { Account } from "@/types/account";
 
@@ -67,13 +68,8 @@ interface AccountProps {
 
 const props = defineProps<AccountProps>();
 
-const emit = defineEmits<{
-  (e: "update", account: Account): void;
-  (e: "delete"): void;
-}>();
-
 const localAccount = ref<Account>({ ...props.account });
-const localLabel = ref(props.account.label); // Отдельная ссылка для метки
+const localLabel = ref<string>(props.account.label || "");
 const recordTypes = ref(["LDAP", "Локальная"]);
 
 // ref для отслеживания ошибок валидации
@@ -135,6 +131,7 @@ const validateField = (fieldName: "login" | "password" | "label") => {
       break;
   }
 };
+
 const onRecordTypeChange = () => {
   if (localAccount.value.recordType === "LDAP") {
     localAccount.value.password = null; // Устанавливаем пароль на null
@@ -159,23 +156,24 @@ const onPasswordBlur = () => {
 
 const onUpdate = () => {
   // Преобразование метки в массив объектов
-  localAccount.value.label = localLabel.value;
+  localAccount.value.label = localLabel.value
+    .split(";") // Разделение строки меток на подстроки по символу “;”.
+    .map((label) => ({ text: label.trim() })); // Преобразуем в массив объектов
   emit("update", localAccount.value);
-};
-
-const onDelete = () => {
-  emit("delete");
 };
 
 watch(
   () => props.account,
   (newAccount) => {
     localAccount.value = { ...newAccount };
-    localLabel.value = newAccount.label;
-    if (newAccount.label) {
-      localLabel.value = newAccount.label;
-    }
+    localLabel.value = newAccount.label
+      ? Array.isArray(newAccount.label)
+        ? newAccount.label.map((item) => item.text).join(";")
+        : newAccount.label
+      : "";
   },
   { immediate: true, deep: true }
 );
+
+const emit = defineEmits(["update", "delete"]);
 </script>
