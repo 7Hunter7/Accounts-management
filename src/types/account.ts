@@ -1,6 +1,6 @@
 export interface Account {
   id: string;
-  label: string | { text: string }[]; // label является строкой или массивом объектов, где каждый объект имеет поле text типа string
+  label: { text: string }[]; // label является строкой или массивом объектов, где каждый объект имеет поле text типа string
   recordType: string;
   login: string;
   password?: string | null | undefined;
