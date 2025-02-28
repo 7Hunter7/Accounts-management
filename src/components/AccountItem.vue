@@ -170,7 +170,7 @@ const onUpdate = () => {
     ...localAccount.value,
     label: localLabel.value
       .split(";") // Разделим строку "Метки" на подстроку по символу “;”.
-      .map((label) => ({ text: label.trim() })),
+      .map((label) => ({ text: label.trim() })), // Преобразуем в массив объектов
   };
   console.log("AccountItem emitting update:", localAccount.value);
   emit("update", updatedAccount);
@@ -186,7 +186,7 @@ watch(
         : newAccount.label
       : "";
   },
-  { immediate: true, deep: true }
+  { immediate: true }
 );
 
 const onDelete = () => {
