@@ -7,7 +7,7 @@
             label="Метка"
             v-model="localLabel"
             :rules="labelRules"
-            @blur="onLabelBlur"
+            @blur="() => onBlur('label')"
             :error="labelError"
             hint="Метки вводятся через знак ';'"
           ></v-text-field>
@@ -27,7 +27,7 @@
             label="Логин"
             v-model="localAccount.login"
             :rules="loginRules"
-            @blur="onLoginBlur"
+            @blur="() => onBlur('login')"
             :error="loginError"
           ></v-text-field>
         </v-col>
@@ -38,7 +38,7 @@
             label="Пароль"
             v-model="localAccount.password"
             :rules="passwordRules"
-            @blur="onPasswordBlur"
+            @blur="() => onBlur('password')"
             :error="passwordError"
             :type="showPassword ? 'text' : 'password'"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -95,33 +95,9 @@ const onRecordTypeChange = () => {
   onUpdate();
 };
 
-const onLabelBlur = () => {
+const onBlur = (fieldName: "login" | "password" | "label") => {
   validateField(
-    "label",
-    localAccount.value,
-    localLabel.value,
-    loginError,
-    passwordError,
-    labelError
-  );
-  onUpdate();
-};
-
-const onLoginBlur = () => {
-  validateField(
-    "login",
-    localAccount.value,
-    localLabel.value,
-    loginError,
-    passwordError,
-    labelError
-  );
-  onUpdate();
-};
-
-const onPasswordBlur = () => {
-  validateField(
-    "password",
+    fieldName,
     localAccount.value,
     localLabel.value,
     loginError,
