@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import type { Account } from "@/types/account";
 
 interface AccountProps {
@@ -77,7 +77,7 @@ const localAccount = ref<Account>({ ...props.account });
 const localLabel = ref<string>(
   Array.isArray(props.account.label)
     ? props.account.label.map((item) => item.text).join(";")
-    : ""
+    : props.account.label || ""
 );
 const recordTypes = ref(["LDAP", "Локальная"]);
 const showPassword = ref(false);
@@ -166,12 +166,14 @@ const onPasswordBlur = () => {
 
 // Преобразование метки в массив объектов:
 const onUpdate = () => {
+  console.log("onUpdate before, localLabel.value: ", localLabel.value);
   const updatedAccount = {
     ...localAccount.value,
     label: localLabel.value
       .split(";") // Разделим строку "Метки" на подстроку по символу “;”.
       .map((label) => ({ text: label.trim() })), // Преобразуем в массив объектов
   };
+  console.log("onUpdate after, localLabel.value: ", localLabel.value);
   console.log("AccountItem emitting update:", localAccount.value);
   emit("update", updatedAccount);
 };
@@ -179,12 +181,13 @@ const onUpdate = () => {
 watch(
   () => props.account,
   (newAccount) => {
-    localAccount.value = { ...newAccount };
-    localLabel.value = newAccount.label
-      ? Array.isArray(newAccount.label)
-        ? newAccount.label.map((item) => item.text).join(";")
-        : newAccount.label
-      : "";
+    // Обновляем localAccount напрямую, чтобы сохранить реактивность
+    localAccount.value.login = newAccount.login;
+    localAccount.value.password = newAccount.password;
+    localAccount.value.recordType = newAccount.recordType;
+    localLabel.value = Array.isArray(newAccount.label)
+      ? newAccount.label.map((item) => item.text).join(";")
+      : newAccount.label || "";
   },
   { immediate: true }
 );

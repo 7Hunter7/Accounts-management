@@ -6,7 +6,7 @@ export const useAppStore = defineStore("app", {
     accounts: [
       // Массив начальных аккаунтов
       {
-        id: crypto.randomUUID(), //  Генерация уникальных идентификаторов
+        id: crypto.randomUUID(), // Генерация уникальных идентификаторов
         label: [{ text: "XXX" }],
         recordType: "Локальная",
         login: "Значение_1",
