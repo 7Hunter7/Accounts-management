@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { computed } from "vue";
 import AccountItem from "@/components/AccountItem.vue";
 import { useAppStore } from "@/stores/app";
 import type { Account } from "@/types/account";
@@ -48,10 +48,6 @@ import type { Account } from "@/types/account";
 const store = useAppStore();
 
 const accounts = computed(() => store.getAccounts);
-
-onMounted(() => {
-  console.log("Accounts from store:", accounts.value);
-});
 
 const addAccount = () => {
   const newId = crypto.randomUUID(); //  Генерация уникального идентификаторов
@@ -66,7 +62,6 @@ const addAccount = () => {
 };
 
 const updateAccount = (payload: any) => {
-  console.log("AccountForm received update:", payload);
   const { labelString, ...accountData } = payload;
 
   const updatedAccount: Account = {

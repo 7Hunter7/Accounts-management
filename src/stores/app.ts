@@ -50,7 +50,6 @@ export const useAppStore = defineStore("app", {
       this.accounts.push(account);
     },
     updateAccount(account: Account) {
-      console.log("Store updating account:", account);
       const index = this.accounts.findIndex((a) => a.id === account.id);
       if (index !== -1) {
         this.accounts[index] = account;
