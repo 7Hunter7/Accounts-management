@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
 import type { Account } from "@/types/account";
 
 interface AccountProps {
@@ -72,8 +72,6 @@ const emit = defineEmits<{
 }>();
 
 const localAccount = ref<Account>({ ...props.account });
-
-// Преобразуеm массив объектов { text: string } в массив строк (извлекая значения text):
 const localLabel = ref<string>(
   Array.isArray(props.account.label)
     ? props.account.label.map((item) => item.text).join(";")
@@ -164,18 +162,12 @@ const onPasswordBlur = () => {
   onUpdate();
 };
 
-// Преобразование метки в массив объектов:
 const onUpdate = () => {
-  console.log("onUpdate before, localLabel.value: ", localLabel.value);
-  const updatedAccount = {
+  // Отправляем `localAccount` и `localLabel` как отдельные параметры
+  emit("update", {
     ...localAccount.value,
-    label: localLabel.value
-      .split(";") // Разделим строку "Метки" на подстроку по символу “;”.
-      .map((label) => ({ text: label.trim() })), // Преобразуем в массив объектов
-  };
-  console.log("onUpdate after, localLabel.value: ", localLabel.value);
-  console.log("AccountItem emitting update:", localAccount.value);
-  emit("update", updatedAccount);
+    labelString: localLabel.value, // Передаем localLabel как строку
+  });
 };
 
 watch(
