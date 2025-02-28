@@ -23,7 +23,7 @@
       <v-col cols="12" v-for="account in accounts" :key="account.id">
         <AccountItem
           :account="account"
-          @update="updateAccount(account)"
+          @update="updateAccount"
           @delete="deleteAccount(account.id)"
         />
       </v-col>
@@ -65,9 +65,17 @@ const addAccount = () => {
   store.addAccount(newAccount);
 };
 
-const updateAccount = (account: Account) => {
-  console.log("AccountForm received update:", account);
-  store.updateAccount(account);
+const updateAccount = (payload: any) => {
+  console.log("AccountForm received update:", payload);
+  const { labelString, ...accountData } = payload;
+
+  const updatedAccount: Account = {
+    ...accountData,
+    label: labelString
+      ? labelString.split(";").map((label: string) => ({ text: label.trim() }))
+      : [],
+  };
+  store.updateAccount(updatedAccount);
 };
 
 const deleteAccount = (id: string) => {
