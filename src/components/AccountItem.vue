@@ -59,6 +59,13 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import type { Account } from "@/types/account";
+import {
+  formatLabel,
+  labelRules,
+  loginRules,
+  passwordRules,
+  validateField,
+} from "@/utils/accountUtils";
 
 interface AccountProps {
   account: Account;
@@ -72,11 +79,7 @@ const emit = defineEmits<{
 }>();
 
 const localAccount = ref<Account>({ ...props.account });
-const localLabel = ref<string>(
-  Array.isArray(props.account.label)
-    ? props.account.label.map((item) => item.text).join(";")
-    : props.account.label || ""
-);
+const localLabel = ref<string>(formatLabel(props.account.label));
 const recordTypes = ref(["LDAP", "Локальная"]);
 const showPassword = ref(false);
 
@@ -84,61 +87,6 @@ const showPassword = ref(false);
 const loginError = ref(false);
 const passwordError = ref(false);
 const labelError = ref(false);
-
-// Правила валидации:
-const labelRules = ref([
-  (v: any) => {
-    if (v) {
-      return v.length <= 50 || "Метка должна быть не больше 50 символов";
-    }
-    return true; // Не проверяем, если пусто.
-  },
-]);
-const loginRules = ref([
-  (v: any) => !!v || "Логин обязателен для заполнения",
-  (v: any) => {
-    if (v) {
-      return v.length <= 100 || "Логин должен быть не больше 100 символов";
-    }
-    return true;
-  },
-]);
-const passwordRules = ref([
-  (v: any) => !!v || "Пароль обязателен для заполнения",
-  (v: any) => {
-    if (v) {
-      return v.length <= 100 || "Пароль должен быть не больше 100 символов";
-    }
-    return true;
-  },
-]);
-
-// Функция валидации:
-const validateField = (fieldName: "login" | "password" | "label") => {
-  switch (fieldName) {
-    case "login":
-      loginError.value = !loginRules.value.every((rule) => {
-        const result =
-          typeof rule === "function" ? rule(localAccount.value.login) : true;
-        return result === true || result === undefined;
-      });
-      break;
-    case "password":
-      passwordError.value = !passwordRules.value.every((rule) => {
-        const result =
-          typeof rule === "function" ? rule(localAccount.value.password) : true;
-        return result === true || result === undefined;
-      });
-      break;
-    case "label":
-      labelError.value = !labelRules.value.every((rule) => {
-        const result =
-          typeof rule === "function" ? rule(localLabel.value) : true;
-        return result === true || result === undefined;
-      });
-      break;
-  }
-};
 
 const onRecordTypeChange = () => {
   if (localAccount.value.recordType === "LDAP") {
@@ -148,17 +96,38 @@ const onRecordTypeChange = () => {
 };
 
 const onLabelBlur = () => {
-  validateField("label");
+  validateField(
+    "label",
+    localAccount.value,
+    localLabel.value,
+    loginError,
+    passwordError,
+    labelError
+  );
   onUpdate();
 };
 
 const onLoginBlur = () => {
-  validateField("login");
+  validateField(
+    "login",
+    localAccount.value,
+    localLabel.value,
+    loginError,
+    passwordError,
+    labelError
+  );
   onUpdate();
 };
 
 const onPasswordBlur = () => {
-  validateField("password");
+  validateField(
+    "password",
+    localAccount.value,
+    localLabel.value,
+    loginError,
+    passwordError,
+    labelError
+  );
   onUpdate();
 };
 
@@ -177,9 +146,7 @@ watch(
     localAccount.value.login = newAccount.login;
     localAccount.value.password = newAccount.password;
     localAccount.value.recordType = newAccount.recordType;
-    localLabel.value = Array.isArray(newAccount.label)
-      ? newAccount.label.map((item) => item.text).join(";")
-      : newAccount.label || "";
+    localLabel.value = formatLabel(newAccount.label);
   },
   { immediate: true }
 );
